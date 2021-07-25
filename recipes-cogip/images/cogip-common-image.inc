@@ -7,3 +7,7 @@ require recipes-core/images/core-image-base.bb
 IMAGE_FEATURES += " \
     ssh-server-openssh \
 "
+
+do_rootfs[depends] += " \
+    bootfiles:do_deploy \
+"
