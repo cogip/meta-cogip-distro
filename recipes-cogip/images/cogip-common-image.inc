@@ -4,8 +4,12 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0;md5=80
 
 require recipes-core/images/core-image-base.bb
 
+# Network
 IMAGE_FEATURES += " \
     ssh-server-openssh \
 "
 
+# Wireless
+IMAGE_INSTALL += " \
+    crda \
 "
