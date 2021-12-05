@@ -4,4 +4,4 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0;md5=80
 
 SRC_URI += "file://genimage.config"
 
-inherit cogip-genimage
+inherit cogip-genimage-${SOC_FAMILY}
