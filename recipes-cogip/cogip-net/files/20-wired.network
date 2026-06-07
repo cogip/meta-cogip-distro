@@ -1,0 +1,17 @@
+[Match]
+# Match any Ethernet-like interface (eth0, end0, enp*, etc.). Wi-Fi
+# interfaces (wlan*) get their own .network when wpa_supplicant is
+# wired up.
+Type=ether
+
+[Network]
+DHCP=yes
+IPv6AcceptRA=yes
+
+[DHCPv4]
+UseDNS=yes
+UseRoutes=yes
+RouteMetric=10
+
+[DHCPv6]
+UseDNS=yes
