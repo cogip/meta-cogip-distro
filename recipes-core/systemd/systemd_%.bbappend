@@ -11,3 +11,17 @@
 # are actually built.
 SYSTEMD_SERVICE:${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'networkd', 'systemd-networkd.service', '', d)}"
 SYSTEMD_SERVICE:${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'resolved', 'systemd-resolved.service', '', d)}"
+
+# Persistent journal: keep logs on /var/log/journal so they survive a
+# power cycle and can be read off the SD card on a host -- essential to
+# debug a headless board with no serial/network access.
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+SRC_URI += "file://persistent-journal.conf"
+
+do_install:append() {
+    install -d ${D}${sysconfdir}/systemd/journald.conf.d
+    install -m 0644 ${WORKDIR}/persistent-journal.conf \
+        ${D}${sysconfdir}/systemd/journald.conf.d/10-persistent.conf
+}
+
+FILES:${PN} += "${sysconfdir}/systemd/journald.conf.d/10-persistent.conf"
