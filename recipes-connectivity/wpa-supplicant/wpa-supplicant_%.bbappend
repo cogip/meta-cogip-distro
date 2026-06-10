@@ -1,13 +1,17 @@
 # Enable the per-interface wpa_supplicant template for wlan0 so Wi-Fi
 # associates at boot, feeding systemd-networkd's 30-wireless.network.
 #
-# Only enabled when WLAN_SSID is set at build time (Ethernet-only
-# images leave it off). Done here rather than via a preset so the
-# systemd class verifies the wpa_supplicant@.service template exists
-# at do_package time.
-SYSTEMD_SERVICE:${PN} += "${@'wpa_supplicant@wlan0.service' if d.getVar('WLAN_SSID') else ''}"
-
+# Gated on WLAN_SSID so Ethernet-only images leave Wi-Fi off. When Wi-Fi
+# is configured we REPLACE the stock SYSTEMD_SERVICE (so only wlan0's
+# template is managed, not the generic wpa_supplicant.service which would
+# fight networkd over wlan0) AND flip SYSTEMD_AUTO_ENABLE to "enable":
+# the stock recipe ships it "disable", so merely adding the unit to
+# SYSTEMD_SERVICE leaves it packaged-but-disabled -- which is exactly why
+# the kiosk booted with the radio up, the rfkill drop-in installed, yet
+# the supplicant never enabled (systemctl showed disabled/preset:disabled).
 WLAN_SSID ??= ""
+SYSTEMD_SERVICE:${PN} = "${@'wpa_supplicant@wlan0.service' if d.getVar('WLAN_SSID') else 'wpa_supplicant.service'}"
+SYSTEMD_AUTO_ENABLE = "${@'enable' if d.getVar('WLAN_SSID') else 'disable'}"
 
 # Clear rfkill soft-blocks before wpa_supplicant@wlan0 starts (the Pi 4
 # Wi-Fi can boot soft-blocked, which prevents association).
