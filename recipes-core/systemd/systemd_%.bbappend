@@ -18,10 +18,26 @@ SYSTEMD_SERVICE:${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'resolved', 'sys
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI += "file://persistent-journal.conf"
 
+# Console policy: this is a kiosk: the HDMI VT (tty1) is owned by Cog,
+# which does a VT hangup to take DRM master. systemd otherwise enables a
+# login getty on tty1 (vendor symlink getty.target.wants/[email protected]),
+# and the two crash-loop on /dev/tty1 until both hit the start limit ->
+# black screen. OE has no dedicated knob for a VT getty under systemd
+# (SERIAL_CONSOLES is serial-only, USE_VT is sysvinit-only), so mask the
+# unit -- systemd's documented "never start this" mechanism, which also
+# overrides any logind autovt spawn. Login stays available over serial
+# and SSH.
+
 do_install:append() {
     install -d ${D}${sysconfdir}/systemd/journald.conf.d
     install -m 0644 ${WORKDIR}/persistent-journal.conf \
         ${D}${sysconfdir}/systemd/journald.conf.d/10-persistent.conf
+
+    install -d ${D}${sysconfdir}/systemd/system
+    ln -sf /dev/null ${D}${sysconfdir}/systemd/system/getty@tty1.service
 }
 
-FILES:${PN} += "${sysconfdir}/systemd/journald.conf.d/10-persistent.conf"
+FILES:${PN} += " \
+    ${sysconfdir}/systemd/journald.conf.d/10-persistent.conf \
+    ${sysconfdir}/systemd/system/getty@tty1.service \
+"
