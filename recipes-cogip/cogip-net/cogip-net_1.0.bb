@@ -12,7 +12,7 @@ SRC_URI = " \
     file://30-wireless.network \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 RDEPENDS:${PN} = "systemd"
 
@@ -26,9 +26,9 @@ WLAN_PSK  ??= ""
 
 do_install() {
     install -d ${D}${sysconfdir}/systemd/network
-    install -m 0644 ${WORKDIR}/20-wired.network \
+    install -m 0644 ${UNPACKDIR}/20-wired.network \
                     ${D}${sysconfdir}/systemd/network/20-wired.network
-    install -m 0644 ${WORKDIR}/30-wireless.network \
+    install -m 0644 ${UNPACKDIR}/30-wireless.network \
                     ${D}${sysconfdir}/systemd/network/30-wireless.network
 
     # Point /etc/resolv.conf at the stub resolver maintained by
