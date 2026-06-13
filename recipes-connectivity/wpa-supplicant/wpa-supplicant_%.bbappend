@@ -22,7 +22,7 @@ RDEPENDS:${PN} += "${@' rfkill' if d.getVar('WLAN_SSID') else ''}"
 do_install:append() {
     if [ -n "${WLAN_SSID}" ]; then
         install -d ${D}${systemd_system_unitdir}/wpa_supplicant@wlan0.service.d
-        install -m 0644 ${WORKDIR}/unblock-rfkill.conf \
+        install -m 0644 ${UNPACKDIR}/unblock-rfkill.conf \
             ${D}${systemd_system_unitdir}/wpa_supplicant@wlan0.service.d/unblock-rfkill.conf
     fi
 }

@@ -30,7 +30,7 @@ SRC_URI += "file://persistent-journal.conf"
 
 do_install:append() {
     install -d ${D}${sysconfdir}/systemd/journald.conf.d
-    install -m 0644 ${WORKDIR}/persistent-journal.conf \
+    install -m 0644 ${UNPACKDIR}/persistent-journal.conf \
         ${D}${sysconfdir}/systemd/journald.conf.d/10-persistent.conf
 
     install -d ${D}${sysconfdir}/systemd/system
