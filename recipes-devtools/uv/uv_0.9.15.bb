@@ -11,9 +11,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 # now (the kiosk machine is raspberrypi4-64); generalise the triple if we
 # ever target another arch.
 SRC_URI = "https://github.com/astral-sh/uv/releases/download/${PV}/uv-aarch64-unknown-linux-gnu.tar.gz"
-# Fill from the build: `bitbake -c fetch uv` reports the sha on mismatch,
-# or `curl -sL <SRC_URI> | sha256sum`.
-SRC_URI[sha256sum] = ""
+# Canonical upstream sha256 (matches Astral's published .sha256 sidecar).
+SRC_URI[sha256sum] = "d89430e201f629b203975c605cd6bfe85afc2bc0781d95838e2b5177a03b1545"
 
 COMPATIBLE_HOST = "aarch64.*-linux"
 
