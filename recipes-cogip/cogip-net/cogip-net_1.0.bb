@@ -10,6 +10,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 SRC_URI = " \
     file://20-wired.network \
     file://30-wireless.network \
+    file://00-can0.network \
 "
 
 S = "${UNPACKDIR}"
@@ -30,6 +31,8 @@ do_install() {
                     ${D}${sysconfdir}/systemd/network/20-wired.network
     install -m 0644 ${UNPACKDIR}/30-wireless.network \
                     ${D}${sysconfdir}/systemd/network/30-wireless.network
+    install -m 0644 ${UNPACKDIR}/00-can0.network \
+                    ${D}${sysconfdir}/systemd/network/00-can0.network
 
     # Point /etc/resolv.conf at the stub resolver maintained by
     # systemd-resolved so glibc resolves through it.
@@ -60,6 +63,7 @@ do_install() {
 FILES:${PN} = " \
     ${sysconfdir}/systemd/network/20-wired.network \
     ${sysconfdir}/systemd/network/30-wireless.network \
+    ${sysconfdir}/systemd/network/00-can0.network \
     ${sysconfdir}/resolv.conf \
     ${sysconfdir}/wpa_supplicant \
 "

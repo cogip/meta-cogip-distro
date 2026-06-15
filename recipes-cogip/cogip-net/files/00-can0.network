@@ -1,0 +1,11 @@
+# Bring up the CAN-FD bus (MCP251xFD on SPI1, see the rpi-config overlay)
+# for the copilot tool. 500 kbit/s arbitration, 1 Mbit/s data, CAN-FD on.
+# If the CAN controller is absent, can0 never appears and this is a no-op.
+[Match]
+Name=can0
+
+[CAN]
+BitRate=500000
+DataBitRate=1000000
+SamplePoint=87.5%
+FDMode=yes
