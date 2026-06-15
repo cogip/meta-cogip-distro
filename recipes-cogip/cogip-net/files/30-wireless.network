@@ -1,0 +1,15 @@
+[Match]
+Name=wlan0
+
+[Network]
+DHCP=yes
+IPv6AcceptRA=yes
+
+[DHCPv4]
+UseDNS=yes
+UseRoutes=yes
+# Higher metric than wired: prefer Ethernet when both are up.
+RouteMetric=20
+
+[DHCPv6]
+UseDNS=yes

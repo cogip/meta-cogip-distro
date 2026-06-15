@@ -1,0 +1,24 @@
+[Match]
+# Match any Ethernet-like interface (eth0, end0, enp*, etc.). Wi-Fi
+# interfaces (wlan*) get their own .network when wpa_supplicant is
+# wired up.
+Type=ether
+
+[Link]
+# Don't let systemd-networkd-wait-online block boot on Ethernet: with no
+# cable (or a slow link/DHCP) the interface never reaches "routable" and
+# wait-online hangs ~2 min until it times out. The kiosk reaches the
+# dashboard over whichever link comes up; Ethernet is not mandatory.
+RequiredForOnline=no
+
+[Network]
+DHCP=yes
+IPv6AcceptRA=yes
+
+[DHCPv4]
+UseDNS=yes
+UseRoutes=yes
+RouteMetric=10
+
+[DHCPv6]
+UseDNS=yes
